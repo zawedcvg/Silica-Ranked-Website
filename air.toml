@@ -1,0 +1,10 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+    bin = "tmp/main"
+    #cmd = "go build -o {{.Output}} {{.Input}}"
+    cmd = "go build -o ./tmp/main ."
+    include = ["*.go"]
+    exclude_dir = ["client"]
+    #ignore = ["tmp/*"]
