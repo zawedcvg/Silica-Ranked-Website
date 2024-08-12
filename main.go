@@ -218,17 +218,17 @@ func get_all_steam_images(requested_ids map[string]string, waitChannel chan inte
 
 func update_player_leaderboard(db *sqlx.DB, chan_player_leaderboard chan map[string]interface{}) {
 	//need to close these channels somehow
-	player_avg_score_channel := make(chan []player_avg_score_record)
+	//player_avg_score_channel := make(chan []player_avg_score_record)
 	player_total_score_channel := make(chan []player_total_score_record)
 	for {
-		go func() {
-			player_avg_scores := []player_avg_score_record{}
-			err := db.Select(&player_avg_scores, player_avg_leaderboard_query)
-			if err != nil {
-				log.Fatal(err)
-			}
-			player_avg_score_channel <- player_avg_scores
-		}()
+		//go func() {
+			//player_avg_scores := []player_avg_score_record{}
+			//err := db.Select(&player_avg_scores, player_avg_leaderboard_query)
+			//if err != nil {
+				//log.Fatal(err)
+			//}
+			//player_avg_score_channel <- player_avg_scores
+		//}()
 		go func() {
 			player_total_scores := []player_total_score_record{}
 			err := db.Select(&player_total_scores, player_total_leaderboard_query)
@@ -254,7 +254,7 @@ func update_player_leaderboard(db *sqlx.DB, chan_player_leaderboard chan map[str
 			player_total_score_channel <- player_total_scores
 		}()
 		data := map[string]interface{}{
-			"players_avg":   <-player_avg_score_channel,
+			//"players_avg":   <-player_avg_score_channel,
 			"players_total": <-player_total_score_channel,
 			"updated_at":    time.Now(),
 		}

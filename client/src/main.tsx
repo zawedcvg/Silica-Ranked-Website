@@ -63,7 +63,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                     height={"100vh"}
                     display={"flex"}
                     flexDirection={"column"}
-                    overflowY={"hidden"}
+                    overflowY={"scroll"}
                 >
                     <RouterProvider router={router} />
                 </Box>
