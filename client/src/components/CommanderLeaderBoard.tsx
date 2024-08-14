@@ -68,7 +68,7 @@ const CommanderElo = () => {
             }
         },
         //var newDate = new Date
-        staleTime: 5 * 60 * 1000,
+        staleTime: 15 * 60 * 1000,
     });
     const [value, setValue] = React.useState("All");
 

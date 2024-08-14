@@ -8,7 +8,6 @@ import (
 	"strings"
 	"sync"
 
-	//"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -155,7 +154,7 @@ func update_commmander_leaderboard(db *sqlx.DB, chan_commander_leaderboard chan 
 			default:
 			}
 			chan_commander_leaderboard <- data
-			fmt.Println("data sent from commander leaderboard")
+			log.Println("data sent from commander leaderboard")
 		}()
 		time.Sleep(60 * time.Minute)
 
@@ -217,7 +216,7 @@ func get_all_steam_images(requested_ids map[string]string, waitChannel chan inte
 }
 
 func update_player_leaderboard(db *sqlx.DB, chan_player_leaderboard chan map[string]interface{}) {
-	//need to close these channels somehow
+	// NOTE add context stuff to safely close the channels
 	//player_avg_score_channel := make(chan []player_avg_score_record)
 	player_total_score_channel := make(chan []player_total_score_record)
 	for {
@@ -266,7 +265,7 @@ func update_player_leaderboard(db *sqlx.DB, chan_player_leaderboard chan map[str
 			default:
 			}
 			chan_player_leaderboard <- data
-			fmt.Println("data sent from player leaderboard")
+			log.Println("data sent from player leaderboard")
 		}()
 		time.Sleep(60 * time.Minute)
 
@@ -304,7 +303,7 @@ func update_last_match_stats(db *sqlx.DB, chan_last_match_stats chan map[string]
 			default:
 			}
 			chan_last_match_stats <- data
-			fmt.Println("data sent from last match stats")
+			log.Println("data sent from last match stats")
 		}()
 		time.Sleep(30 * time.Minute)
 
@@ -339,6 +338,10 @@ func main() {
 
 	connStr := os.Getenv("DATABASE_URL")
 	db, err := sqlx.Connect("postgres", connStr)
+
+    db.SetMaxOpenConns(1000)
+    db.SetMaxIdleConns(5)
+    db.SetConnMaxLifetime(0)
 
 	if err != nil {
 		log.Fatal(err)
