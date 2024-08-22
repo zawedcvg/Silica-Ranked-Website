@@ -1,12 +1,10 @@
 // NOTE refer to this for linking https://icons8.com/icon/44400/steam
-import AutoSizer from "react-virtualized-auto-sizer";
 import React from "react";
 //from src/
 //import { BASE_URL } from "../main";
 //import steamLogo from "../assets/icons8-steam.svg";
 
 import ReactGA from "react-ga4";
-import { FixedSizeList } from "react-window";
 import {
     Box,
     Flex,
