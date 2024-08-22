@@ -1,10 +1,12 @@
 // NOTE refer to this for linking https://icons8.com/icon/44400/steam
+import AutoSizer from "react-virtualized-auto-sizer";
 import React from "react";
 //from src/
 //import { BASE_URL } from "../main";
 //import steamLogo from "../assets/icons8-steam.svg";
 
 import ReactGA from "react-ga4";
+import { FixedSizeList } from "react-window";
 import {
     Box,
     Flex,
@@ -50,6 +52,66 @@ function doSomething(dateString: string): string {
         });
     return dateToTime(localDate);
 }
+
+//interface TableRowProps {
+    //index: number;
+    //style: React.CSSProperties;
+    //data: commanderELO[];
+//}
+
+//const TableRow: React.FC<TableRowProps> = ({ index, style, data }) => {
+    //const player = data[index];
+    //let color: string;
+
+    //switch (player.FactionName) {
+        //case "Alien":
+            //color = "0.5em solid #8aff87";
+            //break;
+        //case "Centauri":
+            //color = "0.5em solid #e44b4d";
+            //break;
+        //case "Sol":
+            //color = "0.5em solid #b4f4ff";
+            //break;
+        //default:
+            //color = "0.5em solid #b4f4ff";
+            //break;
+    //}
+
+    //return (
+        //<Tr
+            //style={{ ...style, display: "flex", alignItems: "center" }}
+            //key={index}
+            //color={"white"}
+            //fontWeight={"bold"}
+            //background={"#151a1d"}
+        //>
+            //<Td width="10%" textAlign="center">
+                //{index + 1}
+            //</Td>
+            //<Td width="40%" paddingLeft={"0.5em"}>
+                //<Flex alignItems={"center"} margin={"0em"}>
+                    //<img
+                        //style={{
+                            //width: "30px",
+                            //height: "30px",
+                            //borderRadius: "50%",
+                        //}}
+                        //src={player.Avatar}
+                        //alt={`${player.UserName}'s avatar`}
+                    ///>
+                    //<Text paddingLeft={"1em"}>{player.UserName}</Text>
+                //</Flex>
+            //</Td>
+            //<Td width="25%" borderLeft={`5px solid ${color}`}>
+                //<Text paddingLeft="0.5em">{player.FactionName}</Text>
+            //</Td>
+            //<Td width="25%" textAlign="right">
+                //{player.ELO}
+            //</Td>
+        //</Tr>
+    //);
+//};
 
 const CommanderElo = () => {
     const { data: commanderELO, isLoading } = useQuery<commanderAPIResponse>({
@@ -315,8 +377,7 @@ const CommanderElo = () => {
                                         </Th>
                                     </Tr>
                                 </Thead>
-
-                                <Tbody>
+                                <Tbody width={"100%"} flex={1}>
                                     {commanderELO?.commanders.map(
                                         (
                                             player: commanderELO,

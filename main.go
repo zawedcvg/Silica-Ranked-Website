@@ -8,7 +8,7 @@ import (
 	"strings"
 	"sync"
 
-	"log"
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -125,7 +125,7 @@ func update_commmander_leaderboard(db *sqlx.DB, chan_commander_leaderboard chan 
 			commanders := []commander_elo_record{}
 			err := db.Select(&commanders, commander_elo_leaderboard_query)
 			if err != nil {
-				log.Fatal(err)
+                slog.Error(err.Error())
 			}
 
 			requested_ids := make(map[string]string, len(commanders))
@@ -154,7 +154,7 @@ func update_commmander_leaderboard(db *sqlx.DB, chan_commander_leaderboard chan 
 			default:
 			}
 			chan_commander_leaderboard <- data
-			log.Println("data sent from commander leaderboard")
+			slog.Info("data sent from commander leaderboard")
 		}()
 		time.Sleep(60 * time.Minute)
 
@@ -190,18 +190,18 @@ func get_all_steam_images(requested_ids map[string]string, waitChannel chan inte
 			request_id := fmt.Sprintf("http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=%s&steamids=%s", steam_api_key, ids_to_request)
 			resp, err := http.Get(request_id)
 			if resp.StatusCode != http.StatusOK {
-				log.Printf("Error: status code %d", resp.StatusCode)
+				slog.Error("Error:", "status_code", resp.StatusCode)
 			}
 
 			defer resp.Body.Close()
 			body, err := io.ReadAll(resp.Body)
 			if err != nil {
-				log.Printf("Failed to read response body: %v", err)
+				slog.Error("Failed to read response body when getting all steam images due to", "error", err)
 			}
 			var j Root
 			err = json.Unmarshal(body, &j)
 			if err != nil {
-				log.Printf("Failed to unmarshal json due to: %v", err)
+				slog.Error("Failed to unmarshal json due to when getting all the steam images due to:", "error", err)
 			}
             mutex.Lock()
             for _, player := range(j.Response.Players) {
@@ -232,7 +232,7 @@ func update_player_leaderboard(db *sqlx.DB, chan_player_leaderboard chan map[str
 			player_total_scores := []player_total_score_record{}
 			err := db.Select(&player_total_scores, player_total_leaderboard_query)
 			if err != nil {
-				log.Fatal(err)
+				slog.Error(err.Error())
 			}
 
 
@@ -265,7 +265,7 @@ func update_player_leaderboard(db *sqlx.DB, chan_player_leaderboard chan map[str
 			default:
 			}
 			chan_player_leaderboard <- data
-			log.Println("data sent from player leaderboard")
+			slog.Info("data sent from player leaderboard")
 		}()
 		time.Sleep(60 * time.Minute)
 
@@ -280,7 +280,7 @@ func update_last_match_stats(db *sqlx.DB, chan_last_match_stats chan map[string]
 			last_match_commanders := []last_match_commander_record{}
 			err := db.Select(&last_match_commanders, last_match_commander_query)
 			if err != nil {
-				log.Fatal(err)
+				slog.Error(err.Error())
 			}
 			last_match_commander_channel <- last_match_commanders
 		}()
@@ -288,7 +288,7 @@ func update_last_match_stats(db *sqlx.DB, chan_last_match_stats chan map[string]
 			player_total_scores := []last_match_player_record{}
 			err := db.Select(&player_total_scores, last_match_player_query)
 			if err != nil {
-				log.Fatal(err)
+				slog.Error(err.Error())
 			}
 			last_match_player_total_score_channel <- player_total_scores
 		}()
@@ -303,7 +303,7 @@ func update_last_match_stats(db *sqlx.DB, chan_last_match_stats chan map[string]
 			default:
 			}
 			chan_last_match_stats <- data
-			log.Println("data sent from last match stats")
+			slog.Info("data sent from last match stats")
 		}()
 		time.Sleep(30 * time.Minute)
 
@@ -344,7 +344,7 @@ func main() {
     db.SetConnMaxLifetime(0)
 
 	if err != nil {
-		log.Fatal(err)
+		slog.Error(err.Error())
 	}
 
 	commmander_leaderboard_channel := make(chan map[string]interface{})
@@ -354,7 +354,7 @@ func main() {
 	player_leaderboard_data := make(map[string]interface{})
 
 	last_match_stat_channel := make(chan map[string]interface{})
-	last_match_stat_data := make(map[string]interface{})
+	//last_match_stat_data := make(map[string]interface{})
 	println("Connected to the database")
 
 	go func() {
@@ -365,17 +365,17 @@ func main() {
 		update_player_leaderboard(db, player_leaderboard_channel)
 	}()
 
-	go func() {
-		update_last_match_stats(db, last_match_stat_channel)
-	}()
+	//go func() {
+		//update_last_match_stats(db, last_match_stat_channel)
+	//}()
 
-	app.Get("/api/last_match", func(c fiber.Ctx) error {
-		select {
-		case last_match_stat_data = <-last_match_stat_channel:
-		default:
-		}
-		return c.Status(200).JSON(last_match_stat_data)
-	})
+	//app.Get("/api/last_match", func(c fiber.Ctx) error {
+		//select {
+		//case last_match_stat_data = <-last_match_stat_channel:
+		//default:
+		//}
+		//return c.Status(200).JSON(last_match_stat_data)
+	//})
 
 	app.Get("/api/commander_leaderboard", func(c fiber.Ctx) error {
 		select {
@@ -394,7 +394,7 @@ func main() {
 	})
 
 
-    log.Fatal(app.Listen("0.0.0.0:" + port))
+    slog.Error(app.Listen("0.0.0.0:" + port).Error())
 	close(commmander_leaderboard_channel)
 	close(player_leaderboard_channel)
 	close(last_match_stat_channel)
