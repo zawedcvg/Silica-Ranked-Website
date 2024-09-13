@@ -40,7 +40,7 @@ AND f.id = m.faction_id
 ORDER BY m.total_points DESC`
 
 const commander_rating_leaderboard_query = `
-SELECT p.username as username, f.name as faction_name, rc.rating - 3 * rc.uncertainty as leaderboard_rating, p.steam_id as steam_id, 1 as avatar
+SELECT p.username as username, f.name as faction_name, rc.rating - 3 * rc.uncertainty as leaderboard_rating, p.steam_id as steam_id, rc.wins as wins, rc.losses as losses, 1 as avatar
 FROM players p, factions f, rankings_commander rc
 WHERE rc.player_id = p.id AND f.id = rc.faction_id
 ORDER BY leaderboard_rating DESC
@@ -94,7 +94,8 @@ type last_match_player_record struct {
 type commander_elo_record struct {
 	UserName    string `db:"username"`
 	FactionName string `db:"faction_name"`
-	//ELO string `db:"elo"`
+	Wins int32 `db:"wins"`
+	Losses int32 `db:"losses"`
 	LeaderboardRating float64 `db:"leaderboard_rating"`
 	SteamID           string  `db:"steam_id"`
 	Avatar            string  `db:"avatar"`
@@ -303,12 +304,10 @@ func update_last_match_stats(db *sqlx.DB, chan_last_match_stats chan map[string]
 
 func main() {
 	godotenv.Load(".env")
-	fmt.Println("Hello Worlds. Stop thinking about it")
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "4000"
 	}
-	fmt.Println(port)
 	slog.Info("connected to the database")
 
 	app := fiber.New()
