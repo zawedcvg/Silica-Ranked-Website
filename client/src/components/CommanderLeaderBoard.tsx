@@ -30,7 +30,7 @@ export type commanderELO = {
     UserName: string;
     FactionName: string;
     Avatar: string;
-    ELO: number;
+    LeaderboardRating: number;
     SteamId: number;
 };
 
@@ -51,66 +51,6 @@ function doSomething(dateString: string): string {
     return dateToTime(localDate);
 }
 
-//interface TableRowProps {
-    //index: number;
-    //style: React.CSSProperties;
-    //data: commanderELO[];
-//}
-
-//const TableRow: React.FC<TableRowProps> = ({ index, style, data }) => {
-    //const player = data[index];
-    //let color: string;
-
-    //switch (player.FactionName) {
-        //case "Alien":
-            //color = "0.5em solid #8aff87";
-            //break;
-        //case "Centauri":
-            //color = "0.5em solid #e44b4d";
-            //break;
-        //case "Sol":
-            //color = "0.5em solid #b4f4ff";
-            //break;
-        //default:
-            //color = "0.5em solid #b4f4ff";
-            //break;
-    //}
-
-    //return (
-        //<Tr
-            //style={{ ...style, display: "flex", alignItems: "center" }}
-            //key={index}
-            //color={"white"}
-            //fontWeight={"bold"}
-            //background={"#151a1d"}
-        //>
-            //<Td width="10%" textAlign="center">
-                //{index + 1}
-            //</Td>
-            //<Td width="40%" paddingLeft={"0.5em"}>
-                //<Flex alignItems={"center"} margin={"0em"}>
-                    //<img
-                        //style={{
-                            //width: "30px",
-                            //height: "30px",
-                            //borderRadius: "50%",
-                        //}}
-                        //src={player.Avatar}
-                        //alt={`${player.UserName}'s avatar`}
-                    ///>
-                    //<Text paddingLeft={"1em"}>{player.UserName}</Text>
-                //</Flex>
-            //</Td>
-            //<Td width="25%" borderLeft={`5px solid ${color}`}>
-                //<Text paddingLeft="0.5em">{player.FactionName}</Text>
-            //</Td>
-            //<Td width="25%" textAlign="right">
-                //{player.ELO}
-            //</Td>
-        //</Tr>
-    //);
-//};
-
 const CommanderElo = () => {
     const { data: commanderELO, isLoading } = useQuery<commanderAPIResponse>({
         queryKey: ["commander_elos"],
@@ -118,6 +58,7 @@ const CommanderElo = () => {
             try {
                 const res = await fetch(BASE_URL + "commander_leaderboard");
                 const data = await res.json();
+                console.log(data)
 
                 if (!res.ok) {
                     throw new Error(data.error || "Something went wrong");
@@ -370,7 +311,7 @@ const CommanderElo = () => {
                                                 textStyle="primary"
                                                 fontSize={["lg", "xl"]}
                                             >
-                                                ELO
+                                                OpenSkill
                                             </Text>
                                         </Th>
                                     </Tr>
@@ -445,7 +386,7 @@ const CommanderElo = () => {
                                                     <Td borderLeft={color}>
                                                         {player.FactionName}
                                                     </Td>
-                                                    <Td>{player.ELO}</Td>
+                                                    <Td>{player.LeaderboardRating.toFixed(2)}</Td>
                                                 </Tr>
                                             );
                                         },
