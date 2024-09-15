@@ -30,8 +30,10 @@ export type commanderELO = {
     UserName: string;
     FactionName: string;
     Avatar: string;
-    ELO: number;
+    LeaderboardRating: number;
     SteamId: number;
+    Wins: number;
+    Losses: number;
 };
 
 export type commanderAPIResponse = {
@@ -118,6 +120,7 @@ const CommanderElo = () => {
             try {
                 const res = await fetch(BASE_URL + "commander_leaderboard");
                 const data = await res.json();
+                console.log(data);
 
                 if (!res.ok) {
                     throw new Error(data.error || "Something went wrong");
@@ -270,14 +273,7 @@ const CommanderElo = () => {
                                         textStyle={"primary"}
                                         //fontSize={"2xl"}
                                     >
-                                        <Radio
-                                            colorScheme="yellow"
-                                            value="All"
-                                            //fontSize={"2xl"}
-
-                                            //transform= {"initial skewX(30deg)"}
-                                            //transform={"skewX(30deg)"}
-                                        >
+                                        <Radio colorScheme="yellow" value="All">
                                             <Text fontSize={["xs", "md"]}>
                                                 All Factions
                                             </Text>
@@ -370,7 +366,23 @@ const CommanderElo = () => {
                                                 textStyle="primary"
                                                 fontSize={["lg", "xl"]}
                                             >
-                                                ELO
+                                                OpenSkill
+                                            </Text>
+                                        </Th>
+                                        <Th marginRight={"0em"} isNumeric>
+                                            <Text
+                                                textStyle="primary"
+                                                fontSize={["lg", "xl"]}
+                                            >
+                                                Stats
+                                            </Text>
+                                        </Th>
+                                        <Th marginRight={"0em"} isNumeric>
+                                            <Text
+                                                textStyle="primary"
+                                                fontSize={["lg", "xl"]}
+                                            >
+                                                WinRate
                                             </Text>
                                         </Th>
                                     </Tr>
@@ -402,6 +414,10 @@ const CommanderElo = () => {
                                             ) {
                                                 return;
                                             }
+
+                                            var winRate =
+                                                (player.Wins * 100) /
+                                                (player.Wins + player.Losses);
 
                                             return (
                                                 <Tr
@@ -445,7 +461,18 @@ const CommanderElo = () => {
                                                     <Td borderLeft={color}>
                                                         {player.FactionName}
                                                     </Td>
-                                                    <Td>{player.ELO}</Td>
+                                                    <Td>
+                                                        {player.LeaderboardRating.toFixed(
+                                                            2,
+                                                        )}
+                                                    </Td>
+                                                    <Td>
+                                                        {player.Wins}-
+                                                        {player.Losses}
+                                                    </Td>
+                                                    <Td>
+                                                        {winRate.toFixed(1)}%
+                                                    </Td>
                                                 </Tr>
                                             );
                                         },

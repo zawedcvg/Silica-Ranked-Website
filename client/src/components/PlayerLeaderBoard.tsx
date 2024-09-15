@@ -29,6 +29,8 @@ export type playerTotalScore = {
     TotalPoints: number;
     NumberMatches: number;
     Average: number;
+    Wins: number;
+    Losses: number;
     Avatar: string;
 };
 
@@ -322,6 +324,22 @@ const PlayerLeaderBoardTotalPoints = () => {
                                                 Average
                                             </Text>
                                         </Th>
+                                        <Th marginRight={"0em"} isNumeric>
+                                            <Text
+                                                textStyle="primary"
+                                                fontSize={["lg", "xl"]}
+                                            >
+                                                Stats
+                                            </Text>
+                                        </Th>
+                                        <Th marginRight={"0em"} isNumeric>
+                                            <Text
+                                                textStyle="primary"
+                                                fontSize={["lg", "xl"]}
+                                            >
+                                                WinRate
+                                            </Text>
+                                        </Th>
                                     </Tr>
                                 </Thead>
 
@@ -352,6 +370,9 @@ const PlayerLeaderBoardTotalPoints = () => {
                                             ) {
                                                 return;
                                             }
+                                            var winRate =
+                                                (player.Wins * 100) /
+                                                (player.Wins + player.Losses);
 
                                             return (
                                                 <Tr
@@ -399,6 +420,14 @@ const PlayerLeaderBoardTotalPoints = () => {
                                                         {player.TotalPoints}
                                                     </Td>
                                                     <Td>{player.Average}</Td>
+                                                    <Td>
+                                                        {player.Wins}-
+                                                        {player.Losses}
+                                                    </Td>
+                                                    <Td>
+                                                        {winRate.toFixed(1)}%
+                                                    </Td>
+
                                                 </Tr>
                                             );
                                         },
