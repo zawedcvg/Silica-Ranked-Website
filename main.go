@@ -92,10 +92,10 @@ type last_match_player_record struct {
 }
 
 type commander_elo_record struct {
-	UserName    string `db:"username"`
-	FactionName string `db:"faction_name"`
-	Wins int32 `db:"wins"`
-	Losses int32 `db:"losses"`
+	UserName          string  `db:"username"`
+	FactionName       string  `db:"faction_name"`
+	Wins              int32   `db:"wins"`
+	Losses            int32   `db:"losses"`
 	LeaderboardRating float64 `db:"leaderboard_rating"`
 	SteamID           string  `db:"steam_id"`
 	Avatar            string  `db:"avatar"`
@@ -181,10 +181,7 @@ func get_all_steam_images(requested_ids map[string]string, waitChannel chan inte
 	for i := 0; i < len(all_keys); i += batch {
 		wg.Add(1)
 		// 100 is limit in batch requests
-		j := i + batch
-		if j > len(all_keys) {
-			j = len(all_keys)
-		}
+		j := min(i+batch, len(all_keys))
 		ids_to_request := strings.Join(all_keys[i:j], ",")
 		go func() {
 			defer wg.Done()
@@ -216,7 +213,7 @@ func get_all_steam_images(requested_ids map[string]string, waitChannel chan inte
 	waitChannel <- struct{}{}
 }
 
-func update_player_leaderboard(db *sqlx.DB, chan_player_leaderboard chan map[string]interface{}) {
+func update_player_leaderboard(db *sqlx.DB, chan_player_leaderboard chan map[string]any) {
 	// NOTE add context stuff to safely close the channels
 	//player_avg_score_channel := make(chan []player_avg_score_record)
 	player_total_score_channel := make(chan []player_total_score_record)

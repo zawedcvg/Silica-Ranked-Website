@@ -104,19 +104,20 @@ const PlayerLeaderBoardTotalPoints = () => {
                         alignSelf={"end"}
                         //alignItems={"center"}
                         position={"absolute"}
-                        top={"1.2em"}
-                        right={"1em"}
+                        top={["0.8em", "1.2em"]}
+                        right={["0.5em", "1em"]}
+                        display={["none", "flex"]}
                     >
                         <Text
                             textStyle="primary"
                             color={"#9bd1da"}
-                            fontSize={"xs"}
+                            fontSize={["2xs", "xs"]}
                         >
                             Last updated at
                         </Text>
                         <Text
                             color={"white"}
-                            fontSize={"xs"}
+                            fontSize={["2xs", "xs"]}
                             textStyle={"primary"}
                         >
                             {doSomething(playerTotalScore?.updated_at!) || ""}
@@ -127,21 +128,24 @@ const PlayerLeaderBoardTotalPoints = () => {
                         direction="column"
                         //position="relative"
                         alignSelf="center"
-                        gap="10"
+                        gap={["5", "10"]}
                         alignItems="center"
-                        minWidth="60%"
-                        maxWidth="70%"
+                        minWidth={["95%", "60%"]}
+                        maxWidth={["98%", "70%"]}
                         h="100%"
+                        px={["0", "4"]}
                     >
                         {/*This container is of the Heading RadioGroup and Table*/}
                         <Flex
                             direction={"column"}
                             //position={"absolute"}
                             //transform="translateX(-50%)"
-                            marginTop={"4em"}
-                            marginLeft={"3em"}
+                            marginTop={["2em", "4em"]}
+                            marginLeft={["0.5em", "3em"]}
+                            marginRight={["0.5em", "0"]}
                             //margin={"4em"}
                             justifyContent={"start"}
+                            width={["100%", "auto"]}
                         >
                             <Heading color={"#ffffff"}>
                                 <Stack
@@ -151,14 +155,14 @@ const PlayerLeaderBoardTotalPoints = () => {
                                     spacing={3}
                                 >
                                     <Text
-                                        fontSize={["3xl", "6xl"]}
-                                        lineHeight={[5, 9]}
+                                        fontSize={["4xl", "6xl"]}
+                                        lineHeight={[7, 9]}
                                     >
                                         PLAYER
                                     </Text>
                                     <Text
-                                        fontSize={["lg", "2xl"]}
-                                        lineHeight={3}
+                                        fontSize={["xl", "2xl"]}
+                                        lineHeight={[5, 3]}
                                     >
                                         LEADERBOARD
                                     </Text>
@@ -168,7 +172,8 @@ const PlayerLeaderBoardTotalPoints = () => {
                             <Box
                                 position="relative"
                                 width="fit-content"
-                                padding="1em"
+                                padding={["0.5em", "1em"]}
+                                backgroundColor={["rgb(21, 26, 29, 0.8)", "transparent"]}
                                 _after={{
                                     content: '""',
                                     position: "absolute",
@@ -180,6 +185,7 @@ const PlayerLeaderBoardTotalPoints = () => {
                                     clipPath:
                                         "polygon(0 50%, 96% 50%, 100% 100%, 0% 100%)",
                                     zIndex: 0,
+                                    display: ["none", "block"],
                                 }}
                                 _before={{
                                     content: '""',
@@ -192,6 +198,7 @@ const PlayerLeaderBoardTotalPoints = () => {
                                     clipPath:
                                         "polygon(0 0, 100% 0, 100% 50%, 4% 50%) ",
                                     zIndex: 0,
+                                    display: ["none", "block"],
                                 }}
                             >
                                 {" "}
@@ -201,16 +208,17 @@ const PlayerLeaderBoardTotalPoints = () => {
                                     onChange={setValue}
                                     position="relative"
                                     value={value}
-                                    transform={"skewX(30deg)"}
+                                    transform={["none", "skewX(30deg)"]}
                                 >
                                     <Stack
-                                        direction={"row"}
-                                        spacing={5}
-                                        paddingX={"1em"}
+                                        direction={["column", "row"]}
+                                        spacing={["2", "5"]}
+                                        paddingX={["0.5em", "1em"]}
                                         paddingY={"0.5em"}
                                         color={"white"}
-                                        transform={"skewX(-30deg)"}
+                                        transform={["none", "skewX(-30deg)"]}
                                         textStyle={"primary"}
+                                        alignItems={["flex-start", "center"]}
                                         //fontSize={"2xl"}
                                     >
                                         <Radio
@@ -253,23 +261,25 @@ const PlayerLeaderBoardTotalPoints = () => {
 
                         <TableContainer
                             overflowY={"scroll"}
+                            overflowX={["auto", "visible"]}
                             //marginTop={"15em"}
-                            minWidth={"70%"}
-                            maxWidth={"80%"}
+                            minWidth={["95%", "70%"]}
+                            maxWidth={["98%", "80%"]}
                             borderX={"thick"}
                             borderY={"thick"}
-                            marginBottom={"10%"}
+                            marginBottom={["5%", "10%"]}
                             padding={"0em"}
                             textStyle={"secondary"}
                         >
                             <Table
                                 size={"sm"}
                                 variant="unstyled"
+                                minWidth={["600px", "100%"]}
                                 borderX={"thick"}
                                 borderColor={"white"}
-                                style={{
+                                sx={{
                                     borderCollapse: "separate",
-                                    borderSpacing: "0.25em 0.25em",
+                                    borderSpacing: { base: "0.1em 0.1em", md: "0.25em 0.25em" }
                                 }}
                                 borderY={"thick"}
                                 textStyle={"secondary"}
@@ -382,8 +392,8 @@ const PlayerLeaderBoardTotalPoints = () => {
                                                     background={"#151a1d"}
                                                     //fontSize={["xs", "xl"]}
                                                 >
-                                                    <Td>{index + 1}</Td>
-                                                    <Td paddingLeft={"0.5em"}>
+                                                    <Td paddingX={["0.25em", "0.75em"]} paddingY={["0.25em", "0.5em"]}>{index + 1}</Td>
+                                                    <Td paddingLeft={["0.25em", "0.5em"]} paddingX={["0.25em", "0.75em"]} paddingY={["0.25em", "0.5em"]}>
                                                         <Flex
                                                             alignItems={
                                                                 "center"
@@ -396,6 +406,8 @@ const PlayerLeaderBoardTotalPoints = () => {
                                                                         "white",
                                                                     padding:
                                                                         "0em",
+                                                                    width: "30px",
+                                                                    height: "30px",
                                                                 }}
                                                                 src={
                                                                     player.Avatar
@@ -406,6 +418,7 @@ const PlayerLeaderBoardTotalPoints = () => {
                                                                 paddingLeft={
                                                                     "1em"
                                                                 }
+                                                                noOfLines={1}
                                                             >
                                                                 {
                                                                     player.UserName
@@ -413,18 +426,18 @@ const PlayerLeaderBoardTotalPoints = () => {
                                                             </Text>
                                                         </Flex>
                                                     </Td>
-                                                    <Td borderLeft={color}>
+                                                    <Td borderLeft={color} paddingLeft={["0.25em", "0.5em"]} paddingX={["0.25em", "0.75em"]} paddingY={["0.25em", "0.5em"]}>
                                                         {player.FactionName}
                                                     </Td>
-                                                    <Td>
+                                                    <Td paddingX={["0.25em", "0.75em"]} paddingY={["0.25em", "0.5em"]}>
                                                         {player.TotalPoints}
                                                     </Td>
-                                                    <Td>{player.Average}</Td>
-                                                    <Td>
+                                                    <Td paddingX={["0.25em", "0.75em"]} paddingY={["0.25em", "0.5em"]}>{player.Average}</Td>
+                                                    <Td paddingX={["0.25em", "0.75em"]} paddingY={["0.25em", "0.5em"]}>
                                                         {player.Wins}-
                                                         {player.Losses}
                                                     </Td>
-                                                    <Td>
+                                                    <Td paddingX={["0.25em", "0.75em"]} paddingY={["0.25em", "0.5em"]}>
                                                         {winRate.toFixed(1)}%
                                                     </Td>
 

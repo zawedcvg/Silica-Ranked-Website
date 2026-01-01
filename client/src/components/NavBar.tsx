@@ -7,9 +7,9 @@ import { Link as RouterLink, Outlet } from "react-router-dom";
 export default function Nav() {
     return (
         <>
-            <Box bg={"#313e45"} textStyle="primary" color={"white"} px={4}>
+            <Box bg={"#313e45"} textStyle="primary" color={"white"} px={[2, 4]}>
                 <Flex
-                    h={16}
+                    h={[12, 16]}
                     //alignItems={"center"}
                     justify={"space-between"}
                     align={"center"}
@@ -17,32 +17,36 @@ export default function Nav() {
                     //justifyContent={"space-between"}
                 >
                     <Flex
-                        w="7em"
+                        w={["auto", "7em"]}
                         position={"relative"}
-                        top={"1em"}
+                        top={["0.5em", "1em"]}
                         //justifySelf={"center"}
                         alignSelf={"start"}
                         alignItems={"center"}
+                        flexShrink={0}
                     >
-                        <Image src={silica_logo} />
+                        <Image src={silica_logo} boxSize={["40px", "auto"]} />
                         <Text
                             position={"relative"}
-                            left={"1em"}
+                            left={["0.5em", "1em"]}
                             top={"0.1em"}
-                            fontSize={"xl"}
+                            fontSize={["md", "xl"]}
                             borderLeft={"2px solid white"}
-                            paddingLeft={"1em"}
+                            paddingLeft={["0.5em", "1em"]}
+                            display={["block", "block"]}
                         >
                             LEADERBOARD
                         </Text>
                     </Flex>
 
                     <Flex
-                        marginLeft={"auto"}
-                        marginRight={"auto"}
+                        marginLeft={["0", "auto"]}
+                        marginRight={["0", "auto"]}
                         left={"0"}
                         position={"relative"}
-                        fontSize={"xl"}
+                        fontSize={["sm", "xl"]}
+                        gap={["0.75em", "0"]}
+                        flexWrap={["nowrap", "nowrap"]}
                         //="50%"
 
                         //padding={"10em"}
@@ -71,10 +75,10 @@ export default function Nav() {
                             }}
                         >
                             <Text
-                                marginRight={"1em"}
+                                marginRight={["0.5em", "1em"]}
                                 borderRight={"2px solid white"}
-                                fontSize={"xl"}
-                                paddingRight={"1em"}
+                                fontSize={["sm", "xl"]}
+                                paddingRight={["0.5em", "1em"]}
                             >
                                 COMMANDER
                             </Text>
@@ -102,10 +106,10 @@ export default function Nav() {
                             }}
                         >
                             <Text
-                                marginRight={"1em"}
+                                marginRight={["0.5em", "1em"]}
                                 borderRight={"2px solid white"}
-                                paddingRight={"1em"}
-                                fontSize={"xl"}
+                                paddingRight={["0.5em", "1em"]}
+                                fontSize={["sm", "xl"]}
                             >
                                 PLAYER
                             </Text>
@@ -132,7 +136,7 @@ export default function Nav() {
                                 },
                             }}
                         >
-                            <Text marginRight={"1em"} fontSize={"xl"}>
+                            <Text marginRight={["0.5em", "1em"]} fontSize={["sm", "xl"]}>
                                 STATITICS
                             </Text>
                         </Link>
